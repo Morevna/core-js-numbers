@@ -108,7 +108,11 @@ function getLinearEquationRoot(a, b) {
  *   (0,1) (0,1)     => 0
  */
 function getAngleBetweenVectors(x1, y1, x2, y2) {
-  return (180 * Math.atan2(x2 - x1, y2 - y1)) / Math.PI;
+  const ScalarProduct = x1 * x2 + y1 * y2;
+  const moduleA = Math.sqrt(x1 * x1 + y1 * y1);
+  const moduleB = Math.sqrt(x2 * x2 + y2 * y2);
+  const cosTheta = ScalarProduct / (moduleA * moduleB);
+  return Math.acos(cosTheta);
 }
 
 // cosα=ax·bx+ay·by/ax2+ay2·bx2+by2
@@ -182,8 +186,9 @@ function getParallelepipedDiagonal(a, b, c) {
  *   1678, 2  => 1700
  *   1678, 3  => 2000
  */
-function roundToPowerOfTen(/* num, pow */) {
-  throw new Error('Not implemented');
+function roundToPowerOfTen(num, pow) {
+  const powerOfTen = 10 ** pow;
+  return Math.round(num / powerOfTen) * powerOfTen;
 }
 
 /**
@@ -204,10 +209,13 @@ function roundToPowerOfTen(/* num, pow */) {
  *   17 => true
  */
 function isPrime(n) {
-  if (2 ** (n - 1) % n === 1) {
-    return true;
+  if (n === 2) return true;
+  if (n <= 1) return false;
+  if (n % 2 === 0) return false;
+  for (let i = 3; i <= Math.sqrt(n); i += 2) {
+    if (n % i === 0) return false;
   }
-  return false;
+  return true;
 }
 
 /**
@@ -260,8 +268,17 @@ function getCube(num) {
  *   3  => 2
  *   10 => 55
  */
-function getFibonacciNumber(/* index */) {
-  throw new Error('Not implemented');
+function getFibonacciNumber(index) {
+  if (index === 0) return 0;
+  if (index === 1) return 1;
+  let a = 0;
+  let b = 1;
+  for (let i = 2; i <= index; i += 1) {
+    const next = a + b;
+    a = b;
+    b = next;
+  }
+  return b;
 }
 
 /**
@@ -294,8 +311,9 @@ function getSumToN(n) {
  *   202 => 4  // (2+0+2)
  *   5   => 5  // 5
  */
-function getSumOfDigits(/* num */) {
-  throw new Error('Not implemented');
+function getSumOfDigits(num) {
+  const arr = num.toString().split('').map(Number);
+  return arr.reduce((a, b) => a + b, 0);
 }
 
 /**
@@ -309,8 +327,9 @@ function getSumOfDigits(/* num */) {
  *   16  => true
  *   15  => false
  */
-function isPowerOfTwo(/* num */) {
-  throw new Error('Not implemented');
+function isPowerOfTwo(num) {
+  if (num <= 0) return false;
+  return Number.isInteger(Math.log2(num));
 }
 
 /**
